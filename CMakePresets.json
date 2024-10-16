@@ -1,0 +1,38 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "Mingw64-Release",
+            "displayName": "Mingw64 Release",
+            "description": "Configure for Mingw64 in Release mode",
+            "binaryDir": "${sourceDir}/out/build/Mingw64-Release",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/Mingw64-Release",
+                "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
+                "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
+                "SUNDIALS_DIR": "C:/shudws/cvode/cvode-6.7.0/out/install/Mingw64-Release/lib/cmake/sundials"
+
+            },
+            "environment": {
+                "PATH": "C:/msys64/mingw64/bin;C:/msys64/usr/local/bin;C:/msys64/usr/bin;C:/msys64/bin",
+                "INCLUDE": "C:/msys64/mingw64/include/c++/9.1.0;C:/msys64/mingw64/include/c++/9.1.0/tr1;C:/msys64/mingw64/include/c++/9.1.0/x86_64-w64-mingw32"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-Mingw64-Release",
+            "displayName": "Build Mingw64 Release",
+            "description": "Build using Mingw64 in Release mode",
+            "configurePreset": "Mingw64-Release",
+            "configuration": "RelWithDebInfo",
+            "environment": {
+                "PATH": "C:/msys64/mingw64/bin;C:/msys64/usr/local/bin;C:/msys64/usr/bin;C:/msys64/bin",
+                "INCLUDE": "C:/msys64/mingw64/include/c++/9.1.0;C:/msys64/mingw64/include/c++/9.1.0/tr1;C:/msys64/mingw64/include/c++/9.1.0/x86_64-w64-mingw32"
+            }
+        }
+    ]
+    
+}
