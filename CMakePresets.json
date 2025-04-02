@@ -1,38 +1,161 @@
 {
     "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
     "configurePresets": [
         {
-            "name": "Mingw64-Release",
-            "displayName": "Mingw64 Release",
-            "description": "Configure for Mingw64 in Release mode",
-            "binaryDir": "${sourceDir}/out/build/Mingw64-Release",
+            "name": "mingw64-release",
+            "displayName": "MinGW 64-bit Release",
+            "description": "Configure for MinGW64 in Release mode with debug info",
+            "binaryDir": "${sourceDir}/out/build/mingw64-release",
             "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/Mingw64-Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/mingw64-release",
                 "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
                 "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
-                "SUNDIALS_DIR": "C:/shudws/cvode/cvode-6.7.0/out/install/Mingw64-Release/lib/cmake/sundials"
-
+                "SUNDIALS_DIR": "C:/shudws/cvode/cvode-6.7.0/out/install/Mingw64-Release/lib/cmake/sundials",
+                "BUILD_TESTING": false
             },
             "environment": {
                 "PATH": "C:/msys64/mingw64/bin;C:/msys64/usr/local/bin;C:/msys64/usr/bin;C:/msys64/bin",
                 "INCLUDE": "C:/msys64/mingw64/include/c++/9.1.0;C:/msys64/mingw64/include/c++/9.1.0/tr1;C:/msys64/mingw64/include/c++/9.1.0/x86_64-w64-mingw32"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Linux Debug",
+            "description": "Configure for Linux using GCC in Debug mode",
+            "binaryDir": "${sourceDir}/out/build/linux-debug",
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_FLAGS": "-g",
+                "SUNDIALS_DIR": "/root/tools/cvode/INSTDIR/lib/cmake/sundials",
+                "BUILD_TESTING": true
+            },
+            "environment": {
+                "LD_LIBRARY_PATH": "/root/tools/cvode/INSTDIR/lib"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "linux-release",
+            "displayName": "Linux Release",
+            "description": "Configure for Linux using GCC in Release mode",
+            "binaryDir": "${sourceDir}/out/build/linux-release",
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Release",
+                "SUNDIALS_DIR": "/root/tools/cvode/INSTDIR/lib/cmake/sundials",
+                "BUILD_TESTING": false
+            },
+            "environment": {
+                "LD_LIBRARY_PATH": "/root/tools/cvode/INSTDIR/lib"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "macos-release",
+            "displayName": "macOS Release",
+            "description": "Configure for macOS using Clang in Release mode",
+            "binaryDir": "${sourceDir}/out/build/macos-release",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/macos-release",
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "SUNDIALS_DIR": "/usr/local/lib/cmake/sundials",
+                "BUILD_TESTING": false
+            },
+            "environment": {
+                "DYLD_LIBRARY_PATH": "/usr/local/lib"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "build-Mingw64-Release",
-            "displayName": "Build Mingw64 Release",
-            "description": "Build using Mingw64 in Release mode",
-            "configurePreset": "Mingw64-Release",
+            "name": "build-mingw64-release",
+            "displayName": "Build MinGW64 Release",
+            "description": "Build using MinGW64 in Release mode",
+            "configurePreset": "mingw64-release",
             "configuration": "RelWithDebInfo",
             "environment": {
                 "PATH": "C:/msys64/mingw64/bin;C:/msys64/usr/local/bin;C:/msys64/usr/bin;C:/msys64/bin",
                 "INCLUDE": "C:/msys64/mingw64/include/c++/9.1.0;C:/msys64/mingw64/include/c++/9.1.0/tr1;C:/msys64/mingw64/include/c++/9.1.0/x86_64-w64-mingw32"
             }
+        },
+        {
+            "name": "build-linux-debug",
+            "displayName": "Build Linux Debug",
+            "description": "Build using GCC on Linux in Debug mode",
+            "configurePreset": "linux-debug",
+            "configuration": "Debug",
+            "environment": {
+                "LD_LIBRARY_PATH": "/root/tools/cvode/INSTDIR/lib"
+            }
+        },
+        {
+            "name": "build-linux-release",
+            "displayName": "Build Linux Release",
+            "description": "Build using GCC on Linux in Release mode",
+            "configurePreset": "linux-release",
+            "configuration": "Release",
+            "environment": {
+                "LD_LIBRARY_PATH": "/root/tools/cvode/INSTDIR/lib"
+            }
+        },
+        {
+            "name": "build-macos-release",
+            "displayName": "Build macOS Release",
+            "description": "Build using Clang on macOS in Release mode",
+            "configurePreset": "macos-release",
+            "configuration": "RelWithDebInfo",
+            "environment": {
+                "DYLD_LIBRARY_PATH": "/usr/local/lib"
+            }
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "test-linux-debug",
+            "displayName": "Test Linux Debug",
+            "description": "Run tests for Linux Debug build",
+            "configurePreset": "linux-debug",
+            "configuration": "Debug",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": false
+            }
         }
     ]
-    
 }
